@@ -1,3 +1,4 @@
+'use client'
 import { LoadingDots, AlertCircleIcon } from '@/components/icons';
 import { MouseEvent, useState } from 'react';
 
