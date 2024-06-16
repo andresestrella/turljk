@@ -12,8 +12,8 @@ export default function Page({ params }: { params: { id: string } }) {
   const [player, setPlayer] = useState<any>();
 
   // var player: any;
-  const useYoutube = (callback: any) => {
-    if (!window.YT) {
+  const loadYoutube = (callback: any) => {
+    if (!( window as any ).YT) {
       var tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -30,7 +30,7 @@ export default function Page({ params }: { params: { id: string } }) {
     // 3. This function creates an <iframe> (and YouTube player)
     //    after the API code downloads.
     setPlayer(
-      new YT.Player('player', {
+      new (window as any).YT.Player('player', {
         height: '600',
         width: '800',
         videoId: 'dQw4w9WgXcQ',
@@ -52,7 +52,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   useEffect(() => {
-    useYoutube(loadVideo);
+    loadYoutube(loadVideo);
   }, []);
 
   // let videoElement: any = null;
@@ -72,7 +72,6 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const handleClick = () => {
     setIsRevealed(true);
-    console.log('player', player);
     player.target.playVideo();
     // videoElement.target.playVideo();
     setTimeout(() => {

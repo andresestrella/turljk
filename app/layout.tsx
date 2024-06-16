@@ -2,10 +2,10 @@ import '../styles/globals.css';
 import { ReactNode } from 'react';
 import { Metadata } from 'next';
 import { Viewport } from 'next';
-import ClusterProvisioning from '@/components/layout/cluster-provisioning';
 import { Cabin } from 'next/font/google';
-import clientPromise from '@/lib/mongodb';
 import Script from 'next/script';
+// import ClusterProvisioning from '@/components/layout/cluster-provisioning';
+// import clientPromise from '@/lib/mongodb';
 
 export const metadata: Metadata = {
   title: 'TURL',
@@ -55,10 +55,10 @@ export default function RootLayout({
   // clusterStillProvisioning,
   children
 }: {
-  clusterStillProvisioning?: boolean;
+  // clusterStillProvisioning?: boolean;
   children: ReactNode;
 }) {
-  let clusterStillProvisioning = false;
+  // let clusterStillProvisioning = false;
 
   // const fetchData = async () => {
   //   try {

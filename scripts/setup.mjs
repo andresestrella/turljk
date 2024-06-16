@@ -18,7 +18,7 @@ const setup = async () => {
 
     if (hasData) {
       console.log('Database already exists with data');
-      client.close();
+      await client.close();
       return;
     }
 

@@ -1,7 +1,7 @@
 'use client';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import { FormEvent, Fragment, useRef, useState } from 'react';
+import { FormEvent, Fragment, useState } from 'react';
 import Image from 'next/image';
 
 export default function Home() {
@@ -139,7 +139,7 @@ export default function Home() {
                 <p> Here is your new URL: </p>
                 <div className="">
                   <p>
-                    👁 Remember! If your URL isn't used in 20 days
+                    👁 Remember! If your URL isn&apos;t used in 20 days
                     <Image
                       className="mx-1 inline-block border border-black"
                       src="/rick-smiling-removebg-preview.jpg"
