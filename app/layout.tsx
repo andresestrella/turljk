@@ -56,7 +56,6 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   // let clusterStillProvisioning = false;
-
   // const fetchData = async () => {
   //   try {
   //     await clientPromise;
