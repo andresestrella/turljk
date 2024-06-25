@@ -1,5 +1,4 @@
 import { MongoClient } from 'mongodb';
-import { faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -10,11 +9,9 @@ const setup = async () => {
   try {
     client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
+    const redirects = client.db('turl-db').collection('redirects');
 
-    const hasData = await client
-      .db('test')
-      .collection('users')
-      .countDocuments();
+    const hasData = await redirects.countDocuments();
 
     if (hasData) {
       console.log('Database already exists with data');
@@ -22,28 +19,25 @@ const setup = async () => {
       return;
     }
 
-    const records = [...Array(10)].map(() => {
-      const [fName, lName] = faker.name.findName().split(' ');
-      const username = faker.internet.userName(fName, lName);
-      const email = faker.internet.email(fName, lName);
-      const image = faker.image.people(640, 480, true);
+    const record = {
+      url: 'http://localhost:3000',
+      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      seconds: 30,
+      lastVisit: null,
+      code: null
+    };
 
-      return {
-        name: `${fName} ${lName}`,
-        username,
-        email,
-        image,
-        followers: 0,
-        emailVerified: null
-      };
-    });
+    const insert = await redirects.insertOne(record);
 
-    const insert = await client
-      .db('test')
-      .collection('users')
-      .insertMany(records);
+    const insertedId = insert.insertedId;
+    const code = insertedId.toString().slice(-6);
 
-    if (insert.acknowledged) {
+    const update = await redirects.updateOne(
+      { _id: insertedId },
+      { $set: { code } }
+    );
+
+    if (insert.acknowledged && update.acknowledged) {
       console.log('Successfully inserted records');
     }
   } catch (error) {

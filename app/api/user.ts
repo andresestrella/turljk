@@ -1,7 +1,7 @@
+export {};
 // import type { NextApiRequest, NextApiResponse } from 'next';
 // import { searchUser, updateUser } from 'lib/api/user';
 // import { getSession } from 'next-auth/react';
-// import { getMdxSource } from 'lib/api/user';
 
 // export default async function handler(
 //   req: NextApiRequest,
@@ -30,8 +30,9 @@
 //       if (result) {
 //         await res.revalidate(`/${username}`);
 //       }
-//       const bioMdx = await getMdxSource(bio); // return bioMdx to optimistically show updated state
-//       return res.status(200).json(bioMdx);
+//       // const bioMdx = await getMdxSource(bio); // return bioMdx to optimistically show updated state
+//       // return res.status(200).json(bioMdx);
+//       return res.status(200)
 //     } catch (e: any) {
 //       console.log(e);
 //       return res.status(500).json({
@@ -42,4 +43,3 @@
 //     return res.status(405).end(`Method ${req.method} Not Allowed`);
 //   }
 // }
-export{}
