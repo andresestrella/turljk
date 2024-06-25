@@ -1,164 +1,43 @@
-'use client';
-import { Input } from '@/components/ui/input';
+"use server"
+import { createRedirect, RedirectProps } from '@/lib/api/redirect';
 import Link from 'next/link';
-import { FormEvent, Fragment, useState } from 'react';
-import Image from 'next/image';
+import { Fragment } from 'react';
+import MainForm from './mainForm';
 
-export default function Home() {
-  const ytVidIdRegexp = /youtu(?:.*\/v\/|.*v\=|\.be\/)([A-Za-z0-9_\-]{11})/;
-  const [checked, setChecked] = useState(false);
-  const [submitted, setShowSubmitted] = useState(false);
-  const [vidInput, setVidInput] = useState('');
-  const [timeInput, setTimeInput] = useState('');
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+export async function handleSubmit(formData: FormData) {
+  "use server"
 
-    const formData = new FormData(event.currentTarget);
-
-    const videoId = formData
-      .get('videoUrl')
-      ?.toString()
-      .match(ytVidIdRegexp)?.[1];
-
-    if (!videoId) {
-      alert('Invalid YouTube video URL');
-      return;
-    }
-
-    const response = await fetch('/api/submit', {
-      method: 'POST',
-      body: formData
-    });
-
-    // Handle response if necessary
-    // const data = await response.json()
-    // ...
-    setShowSubmitted(true);
+  const rawFormData: RedirectProps = {
+    url: formData.get('url')!.toString(),
+    seconds: Number(formData.get('seconds')!),
+    videoUrl: formData.get('videoUrl')!.toString(),
+    lastVisit: new Date(),
+    code: undefined,
   }
 
-  function handleSwitchClick() {
-    setChecked(!checked);
+  const redirect = await createRedirect(rawFormData);
+
+  if (!redirect) {
+    alert('Failed to create redirect');
+    return null;
   }
 
+  return redirect;
+}
+
+export async function Home() {
   return (
     <Fragment>
       <main className="flex items-center justify-center h-screen bg-[#faf0e6]">
-        <div className="wrapper container max-w-3xl px-4 md:px-0">
-          <div className="space-y-6 text-center flip-card__front">
-            <div className="group relative flex justify-center">
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Troll URL generator
-              </h1>
-              <span className="absolute bottom-10 scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
-                ✨ Rick roll someone or make them sit through whatever you want
-                before redirecting them to the real URL.
-              </span>
-            </div>
-
-            <div className="flex justify-center items-center">
-              <label className="flex relative switch2">
-                <input
-                  name="switch"
-                  id="switch"
-                  className="toggle switch"
-                  type="checkbox"
-                  value="private"
-                  onClick={handleSwitchClick}
-                />
-
-                <label htmlFor="switch">
-                  <span className="switch-x-toggletext">
-                    <span className="switch-x-checked text-gray-700">
-                      Custom
-                    </span>
-
-                    <Image
-                      className="switch-x-unchecked border-black border"
-                      src="/rick-roll-removebg-preview.jpg"
-                      alt="Rick Roll"
-                      width={30}
-                      height={30}
-                    />
-                  </span>
-                </label>
-
-                <span className="slider"></span>
-              </label>
-            </div>
-
-            <form className="space-y-4 flip-card__form" onSubmit={handleSubmit}>
-              <div
-                className={
-                  'flex justify-center space-x-2 ' + (checked ? '' : 'hidden')
-                }
-              >
-                <Input
-                  name="videoUrl"
-                  id="videoUrl"
-                  className="flex-1 flip-card__input"
-                  type="text"
-                  placeholder="Enter Custom Video URL"
-                  value={
-                    checked
-                      ? vidInput
-                      : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-                  }
-                  onChange={(e) => setVidInput(e.target.value)}
-                  defaultValue="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                />
-                <Input
-                  name="waitTimeInSecs"
-                  id="waitTimeInSecs"
-                  className="flex-1 flip-card__input"
-                  type="number"
-                  placeholder="Enter Wait Time (seconds)"
-                  value={checked ? timeInput : '30'}
-                  onChange={(e) => setTimeInput(e.target.value)}
-                  defaultValue={30}
-                />
-              </div>
-
-              <div className="flex space-x-2 w-full mx-auto">
-                <Input
-                  name="url"
-                  id="url"
-                  required
-                  className="flex-1 flip-card__input"
-                  placeholder="Enter your URL"
-                  type="url"
-                />
-                <button className="flip-card__btn" type="submit">
-                  Generate!
-                </button>
-              </div>
-            </form>
-
-            {submitted && (
-              <>
-                <p> Here is your new URL: </p>
-                <div className="">
-                  <p>
-                    👁 Remember! If your URL isn&apos;t used in 20 days
-                    <Image
-                      className="mx-1 inline-block border border-black"
-                      src="/rick-smiling-removebg-preview.jpg"
-                      alt="Rick Roll"
-                      width={35}
-                      height={25}
-                    />
-                    will personally get into the database and delete it
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
+        <div className="wrapper container px-4 md:px-0">
+          <MainForm></MainForm>
         </div>
       </main>
 
-      <footer className="fixed bottom-0 z-50 w-screen">
-        <div className="flex flex-wrap justify-between bg-[#faf0e6] px-4 py-4 md:px-6">
-          <div className="flex items-center">
+      <footer className="fixed bottom-0 w-screen">
+        <div className="flex flex-wrap justify-between bg-[#faf0e6] px-4 py-4">
+          <div className="flex justify-center items-center">
             <span className="text-sm text-gray-500">made with ♥ by</span>
             <Link
               className="space-x-2 ml-2"
@@ -169,7 +48,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col items-center space-x-2">
             <span className="text-sm text-gray-500">
               Made you smile? consider
             </span>
@@ -229,3 +108,5 @@ function GithubIcon(props: any) {
     </svg>
   );
 }
+
+export default Home;

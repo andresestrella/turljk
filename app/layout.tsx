@@ -9,8 +9,7 @@ import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'TURL',
-  description:
-    'TURL built with Next.js, Vercel, and MongoDB Atlas.',
+  description: 'TURL built with Next.js, Vercel, and MongoDB Atlas.',
 
   icons: {
     icon: '/favicon.ico',
@@ -26,14 +25,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'TURL',
     type: 'website',
-    description:
-      'TURL built with Next.js, Vercel, and MongoDB Atlas.',
+    description: 'TURL built with Next.js, Vercel, and MongoDB Atlas.',
     url: 'https://mongodb.vercel.app'
   },
   other: {
     name: 'TURL',
-    description:
-      'TURL built with Next.js, Vercel, and MongoDB Atlas.',
+    description: 'TURL built with Next.js, Vercel, and MongoDB Atlas.',
     image:
       'https://assets.vercel.com/image/upload/v1654626375/twitter-cards/mongo-integration-starter.png'
   }
@@ -89,18 +86,10 @@ export default function RootLayout({
           //   defer
           // ></Script>
         }
-        {
-          <Script
-            src="https://www.youtube.com/iframe_api"
-            async
-            defer
-          ></Script>
-        }
+        <Script src="https://www.youtube.com/iframe_api" async defer></Script>
       </head>
       <body className={cabin.variable}>
-        <main>
-          {children}
-        </main>
+        <main>{children}</main>
       </body>
     </html>
   );
