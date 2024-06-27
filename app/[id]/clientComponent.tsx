@@ -65,7 +65,8 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
       videoId: getVideoId(redirect.videoUrl),
       mute: 1,
       playerVars: {
-        playsinline: 1
+        playsinline: 1,
+        'controls': 0
       },
       events: {
         onReady: onPlayerReady,
@@ -82,7 +83,6 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
     function onPlayerReady(event: any) {
       setDoneLoading(true);
       playerRef.current = event.target;
-      // setPlayer(event);
     }
   }
 
@@ -93,6 +93,7 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
   const handleClick = () => {
     setIsRevealed(true);
     playerRef.current.playVideo();
+    // playerRef.current.setVolume(100);
     setTimeout(() => {
       setCountdownStarted(true);
     }, 3000);
@@ -108,6 +109,9 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
   }, [countdownStarted]);
 
   useEffect(() => {
+    if (playerRef.current && countdownStarted && countdown >= 0) {
+      playerRef.current.setVolume(100);
+    }
     if (countdown <= 0) {
       window.location.href = redirect.url;
     }
