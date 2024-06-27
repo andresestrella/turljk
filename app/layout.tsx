@@ -86,8 +86,7 @@ export default function RootLayout({
           //   defer
           // ></Script>
         }
-        {<Script src="https://www.youtube.com/iframe_api" async defer></Script>}
-        <script src="@/scripts/hexoids.js" />
+        <Script src="https://www.youtube.com/iframe_api" async defer></Script>
       </head>
       <body className={cabin.variable}>
         <main>{children}</main>
