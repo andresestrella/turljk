@@ -85,7 +85,7 @@ export default function RootLayout({
           //   defer
           // ></Script>
         }
-        <Script src="https://www.youtube.com/iframe_api" async></Script>
+        <Script src="https://www.youtube.com/iframe_api" ></Script>
       </head>
       <body className={cabin.variable}>
         <main>{children}</main>
