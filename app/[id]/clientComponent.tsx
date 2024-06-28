@@ -18,10 +18,11 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function ClientComponent(props: { redirect: RedirectProps }) {
   const redirect = props.redirect;
-  const msg = redirect.videoUrl.includes('dQw4w9WgXcQ') ? 'You got Rick Rolled XD' : 'You got trolled XD';
+  const msg = redirect.videoUrl.includes('dQw4w9WgXcQ')
+    ? 'You got Rick Rolled XD'
+    : 'You got trolled XD';
   const [countdown, setCountdown] = useState<number>(Number(redirect.seconds));
   const [countdownStarted, setCountdownStarted] = useState(false);
-
   const [isRevealed, setIsRevealed] = useState(false);
   const [doneLoading, setDoneLoading] = useState(false);
 
@@ -43,7 +44,11 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
   //   }
   // };
 
-  const loadYoutube = (callback: any) => {
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  const loadYoutube = async (callback: any) => {
     if (!(window as any).YT) {
       var tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
@@ -53,7 +58,13 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
       }
       tag.onload = callback;
     } else {
-      callback();
+      while ((window as any).YT.loaded != 1) {
+        console.log('waiting for youtube api to load');
+        await sleep(500);
+      }
+      if ((window as any).YT.loaded) {
+        callback();
+      }
     }
   };
 
@@ -63,11 +74,11 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
       height: window.innerHeight / 1.5,
       width: window.innerWidth / 1.5,
       videoId: getVideoId(redirect.videoUrl),
-      host:'https://www.youtube-nocookie.com',
+      host: 'https://www.youtube-nocookie.com',
       mute: 1,
       playerVars: {
         playsinline: 1,
-        'controls': 0
+        controls: 0
       },
       events: {
         onReady: onPlayerReady,
