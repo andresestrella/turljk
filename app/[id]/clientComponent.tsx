@@ -63,6 +63,7 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
       height: window.innerHeight / 1.5,
       width: window.innerWidth / 1.5,
       videoId: getVideoId(redirect.videoUrl),
+      host:'https://www.youtube-nocookie.com',
       mute: 1,
       playerVars: {
         playsinline: 1,
