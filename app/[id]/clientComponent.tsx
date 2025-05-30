@@ -161,7 +161,7 @@ export default function ClientComponent(props: { redirect: RedirectProps }) {
         </div>
 
         <Link
-          className="absolute top-0 right-0 text-blue-700 font-bold mr-5"
+          className="absolute top-0 right-0 text-blue-700 font-bold mr-5 mt-5 bg-white/80 px-4 py-2 rounded-lg shadow-sm hover:bg-white transition-colors"
           href="/"
           rel="noopener noreferrer"
           target="_blank"
