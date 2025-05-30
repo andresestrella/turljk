@@ -1,3 +1,4 @@
+// app/api/cron/route.ts
 import clientPromise from '@/lib/mongodb';
 import { NextResponse } from 'next/server';
 
