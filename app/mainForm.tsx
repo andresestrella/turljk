@@ -93,10 +93,12 @@ export default function MainForm() {
 
       <form
         className="space-y-4 flip-card__form"
-        // onSubmit={() => }
         action={async (formData: FormData) => {
           const result = await handleSubmit(formData);
-          setResult(result ? window.location.href + result : '');
+          if (result) {
+            const baseUrl = window.location.origin;
+            setResult(baseUrl + '/' + result); // Added a '/' for proper path
+          } else setResult('');
           setIsSubmitted(true);
         }}
       >
